@@ -6,8 +6,8 @@ export default {
     modelValue: [String, Number]
   },
   methods: {
-    updateInput(event: any) {
-      (this as any).$emit('update:modelValue', event.target.value)
+    updateInput(event: Event) {
+      (this as any).$emit('update:modelValue', (event.target as HTMLInputElement).value)
     }
   }
 }
