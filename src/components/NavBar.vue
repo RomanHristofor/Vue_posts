@@ -12,6 +12,7 @@ export default {
     <div class="navbar__btn">
       <post-button @click="$router.push('/posts')">Posts</post-button>
       <post-button @click="$router.push('/about')">About</post-button>
+      <post-button @click="$router.push('/composition')">Composition</post-button>
     </div>
   </div>
 </template>

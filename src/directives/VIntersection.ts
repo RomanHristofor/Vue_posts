@@ -7,17 +7,37 @@ type IntersectionObserverCallback = (
 export default {
   name: 'intersection',
   mounted(el: HTMLElement, binding: DirectiveBinding) {
-    const options = {
-      rootMargin: "0px",
-      threshold: 1.0,
+    const createObserver = (b = {}) => {
+      const observerCallback: IntersectionObserverCallback = (entries) => {
+        const entry = entries[0];
+
+        if (entry.isIntersecting && el._page < 5 && b.page < b.totalPages) {
+          binding.value.loadPosts();
+        }
+      };
+
+      const options = {
+        rootMargin: "0px",
+        threshold: 1.0,
+      };
+
+      const observer = new IntersectionObserver(observerCallback, options);
+      observer.observe(el);
+
+      el._observer = observer;
     };
-    const callback: IntersectionObserverCallback = (entries) => {
-      if(entries[0].isIntersecting && binding.value.page < binding.value.totalPages) {
-        console.log('@',  binding.value);
-        binding.value.loadPosts();
-      }
-    };
-    const observer = new IntersectionObserver(callback, options);
-    observer.observe(el);
-  }
+
+    createObserver();
+    el._page = 1;
+    el._createObserver = createObserver;
+  },
+  updated(el: HTMLElement, binding: DirectiveBinding) {
+    const oldVal = binding.oldValue;
+    const newVal = binding.value;
+
+    if (newVal.totalPages !== oldVal.totalPages) {
+      console.log(newVal, 'Переинициализируем Observer только при изменении ключевых параметров');
+      el._createObserver(newVal);
+    }
+  },
 }

@@ -6,9 +6,9 @@ I present to you the **"Posts"** project - an interface for managing posts, buil
 
 The foundation of the project includes:
 
-- **Vue.js** and **Vuex** technologies for creating components and managing state.
-- The **vue-class-component** library provides class syntax.
-- **vue-router** for handling routing.
+- **Vue.js 3x** and **Vuex 4x** technologies for creating components and managing state.
+- **vue-router 4x** for handling routing.
+- **Composition API** is used prominently to define component logic. setup() functions colocate data, methods and lifecycle hooks.
 
 ## Features
 

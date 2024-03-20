@@ -11,6 +11,7 @@ export type Post = {
   userId: number;
   title: string;
   body: string;
+  [key: string]: string | number;
 }
 export default {
     components: {
@@ -31,6 +32,7 @@ export default {
         setSearchByTitle: "posts/setSearchByTitle",
         setSelectedSort: "posts/setSelectedSort",
         setPosts: "posts/setPosts",
+        setTotalPages: "posts/setTotalPages",
       }),
       ...mapActions({
         loadMorePosts: "posts/loadMorePosts",
@@ -49,6 +51,9 @@ export default {
     },
     mounted() {
       this.fetchPosts();
+    },
+    unmounted() {
+      this.setPage(1)
     },
     computed: {
       ...mapState({
@@ -116,8 +121,8 @@ export default {
 
 .observer {
   height: 1px;
-  //background: aqua;
-  opacity: 0;
+  background: aqua;
+  //opacity: 0;
 }
 
 </style>

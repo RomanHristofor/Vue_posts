@@ -46,11 +46,9 @@ export const postsModule = {
             state.searchTitle = str
         },
         setPage(state: { page: number; }, num: number) {
-            console.log('setPage', num);
             state.page = num
         },
         setTotalPages(state: { totalPages: number; }, num: number) {
-            console.log('setTotalPages', num);
             state.totalPages = num
         },
     },
