@@ -24,7 +24,7 @@ export default {
 <template>
   <form @submit.prevent>
     <h4>Create post</h4>
-    <post-input placeholder="Title" v-model="post.title" />
+    <post-input v-focus placeholder="Title" v-model="post.title" />
     <post-input placeholder="Description" v-model="post.body" />
     <post-button
         style="align-self: flex-end; margin-top: 15px;"

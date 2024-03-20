@@ -1,5 +1,4 @@
 <script lang="ts">
-
 export default {
 
 }
@@ -7,7 +6,6 @@ export default {
 
 <template>
   <div>Hello World!</div>
-  <router-link to="/posts">Posts</router-link>
 </template>
 
 <style scoped>

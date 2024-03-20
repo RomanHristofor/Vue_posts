@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Main from '@/pages/Main.vue'
+import PostView from '@/components/PostView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -14,7 +15,12 @@ const routes: Array<RouteRecordRaw> = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '@/pages/Posts.vue')
-  }
+  },
+  {
+    path: '/posts/:id',
+    name: 'post',
+    component: PostView
+  },
 ]
 
 const router = createRouter({

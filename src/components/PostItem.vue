@@ -7,6 +7,9 @@ export default {
     },
   },
   methods: {
+    openPost() {
+      this.$router.push(`/posts/${this.post.id}`);
+    }
   }
 }
 </script>
@@ -16,6 +19,7 @@ export default {
     <div class="post__id">{{ post.id }}</div>
     <div><strong>Title:</strong> {{ post.title }}</div>
     <div><strong>Description:</strong> {{ post.body }}</div>
+    <post-button @click="openPost">Open</post-button>
     <post-button @click="$emit('remove', post)">Remove</post-button>
   </div>
 </template>

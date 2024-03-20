@@ -5,6 +5,13 @@ import PostList from "@/components/PostList.vue";
 import PostDialog from "@/components/UI/PostDialog.vue";
 import PostFilter from "@/components/UI/PostFilter.vue";
 import PostInput from "@/components/UI/PostInput.vue";
+
+type Post = {
+  id: number;
+  userId: number;
+  title: string;
+  body: string;
+}
 export default {
     components: {
       PostInput,
@@ -30,18 +37,15 @@ export default {
       }
     },
     methods: {
-      createPost(post) {
+      createPost(post: Post) {
         this.posts.push(post);
         this.show = false;
       },
-      removePost(post) {
-        this.posts = this.posts.filter((p) => p.id !== post.id);
+      removePost(post: Post) {
+        this.posts = this.posts.filter((p: unknown) => p.id !== post.id);
       },
       showDialog() {
         this.show = true;
-      },
-      changePage(p) {
-        this.page = p;
       },
       async fetchPosts() {
         try {
@@ -62,6 +66,7 @@ export default {
         }
       },
       async loadMorePosts() {
+        console.log('call loadMorePosts');
         try {
           this.page += 1;
           setTimeout(async () => {
@@ -81,18 +86,6 @@ export default {
     },
     mounted() {
       this.fetchPosts();
-      const options = {
-        rootMargin: "0px",
-        threshold: 1.0,
-      };
-      const callback = (entries, observer) => {
-        console.log(entries[0].isIntersecting, this.$refs.observer);
-        if(entries[0].isIntersecting && this.page < this.totalPages) {
-          this.loadMorePosts();
-        }
-      };
-      const observer = new IntersectionObserver(callback, options);
-      observer.observe(this.$refs.observer);
     },
     computed: {
       sortedPosts() {
@@ -101,7 +94,7 @@ export default {
         })
       },
       sortedByTitle() {
-        return this.sortedPosts.filter((p) => p.title.toLowerCase().includes(this.searchTitle.toLowerCase()))
+        return this.sortedPosts.filter((p: Post) => p.title.toLowerCase().includes(this.searchTitle.toLowerCase()))
       }
     },
     watch: {
@@ -116,6 +109,7 @@ export default {
   <div class="app-container">
     <h3>Post list</h3>
     <post-input
+        v-focus
         v-model="searchTitle"
         placeholder="Search..."
     />
@@ -133,57 +127,17 @@ export default {
       <post-list v-if="!isLoading" :posts="sortedByTitle" @remove="removePost"/>
       <h3 v-else>Loading...</h3>
     </TransitionGroup>
-    <div ref="observer" class="observer"></div>
-    <!--    <div class="pagination__wrap" >-->
-    <!--      <div-->
-    <!--        v-for="p in totalPages"-->
-    <!--        :key="p"-->
-    <!--        class="page"-->
-    <!--        :class="{-->
-    <!--          'current__page': p === page-->
-    <!--        }"-->
-    <!--        @click="changePage(p)"-->
-    <!--      >-->
-    <!--        {{ p }}-->
-    <!--      </div>-->
-    <!--    </div>-->
+    <div v-intersection="{loadPosts: loadMorePosts, page, totalPages}" class="observer"></div>
   </div>
 </template>
 
 <style scoped>
-
 .app__btn {
   margin: 15px 0;
   display: flex;
   justify-content: space-between;
 }
 
-.pagination__wrap {
-  display: flex;
-  margin-top: 10px;
-}
-
-.page {
-  border: 1px solid black;
-  padding: 10px;
-}
-
-.current__page {
-  border: 3px solid teal;
-}
-
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.5s ease;
-}
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: translateX(130px);
-}
-.list {
-  transition: all 0.5s ease;
-}
 .observer {
   height: 1px;
   opacity: 0;
