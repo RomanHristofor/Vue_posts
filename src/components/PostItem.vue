@@ -9,6 +9,7 @@ export default {
   methods: {
     openPost() {
       this.$router.push(`/posts/${this.post.id}`);
+      this.$store.commit('post/openPost', this.post)
     }
   }
 }
@@ -19,14 +20,14 @@ export default {
     <div class="post__id">{{ post.id }}</div>
     <div><strong>Title:</strong> {{ post.title }}</div>
     <div><strong>Description:</strong> {{ post.body }}</div>
-    <post-button @click="openPost">Open</post-button>
+    <post-button @click="openPost" style="margin-right: 10px;">Open</post-button>
     <post-button @click="$emit('remove', post)">Remove</post-button>
   </div>
 </template>
 
 <style scoped>
 .post {
-  padding: 10px;
+  padding: 20px;
   border: 1px solid teal;
   margin-top: 15px;
   display: flex;

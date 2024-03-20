@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import components from "@/components/UI";
 import directives from "@/directives";
+import store from "@/store";
 import { DirectiveBinding } from 'vue';
 
 interface VueDirective {
@@ -21,4 +22,5 @@ directives.forEach((directive: VueDirective) => {
 
 app
     .use(router)
+    .use(store)
     .mount('#app')

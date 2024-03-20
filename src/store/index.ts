@@ -1,4 +1,6 @@
 import { createStore } from 'vuex'
+import {postModule} from "@/store/postModule";
+import {postsModule} from "@/store/postsModele";
 
 export default createStore({
   state: {
@@ -10,5 +12,7 @@ export default createStore({
   actions: {
   },
   modules: {
+    post: postModule,
+    posts: postsModule
   }
 })

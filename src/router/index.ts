@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Main from '@/pages/Main.vue'
 import PostView from '@/components/PostView.vue'
+import About from "@/pages/About.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,6 +21,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/posts/:id',
     name: 'post',
     component: PostView
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: About
   },
 ]
 

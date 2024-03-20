@@ -1,19 +1,14 @@
 <script lang="ts">
+import togglePopup from "@/mixins/togglePopup";
+
 export default {
   name: 'post-dialog',
-  props: {
-    show: {
-      type: Boolean,
-      default: false
-    }
-  },
-  methods: {
-  }
+  mixins: [togglePopup],
 }
 </script>
 
 <template>
-  <div class="dialog" v-if="show" @click="$emit('update:show', false)">
+  <div class="dialog" v-if="show" @click="hideDialog">
     <div class="dialog-content" @click.stop>
       <slot></slot>
     </div>

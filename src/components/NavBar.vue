@@ -8,10 +8,10 @@ export default {
 
 <template>
   <div class="navbar">
-    <div>Vue 3</div>
+    <div @click="$router.push('/')">Vue 3</div>
     <div class="navbar__btn">
-      <post-button @click="$router.push('/')">Home</post-button>
       <post-button @click="$router.push('/posts')">Posts</post-button>
+      <post-button @click="$router.push('/about')">About</post-button>
     </div>
   </div>
 </template>
