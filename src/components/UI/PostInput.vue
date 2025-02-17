@@ -1,16 +1,19 @@
 <script lang="ts">
 
-export default {
+import {defineComponent} from "vue";
+
+export default defineComponent({
   name: 'post-input',
   props: {
     modelValue: [String, Number]
   },
   methods: {
     updateInput(event: Event) {
-      (this as any).$emit('update:modelValue', (event.target as HTMLInputElement).value)
+      console.log('updateInput', (event.target as HTMLInputElement).value);
+      this.$emit('update:modelValue', (event.target as HTMLInputElement).value)
     }
   }
-}
+})
 </script>
 
 <template>
@@ -18,7 +21,6 @@ export default {
 </template>
 
 <style scoped>
-
 .input {
   width: 100%;
   padding: 10px 15px;

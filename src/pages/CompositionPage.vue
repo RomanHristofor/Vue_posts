@@ -7,6 +7,10 @@ import PostInput from "@/components/UI/PostInput.vue";
 import {usePosts} from "@/hooks/usePosts";
 import {useSortedPosts} from "@/hooks/useSortedPosts";
 import {useSortedByTitle} from "@/hooks/useSortedByTitle";
+import {defineComponent} from "vue";
+import {useLoadMorePosts} from "@/hooks/useLoadMorePosts";
+
+const LIMIT_POST = 20;
 
 export type Post = {
   id: number;
@@ -14,7 +18,7 @@ export type Post = {
   title: string;
   body: string;
 }
-export default {
+export default defineComponent({
   components: {
     PostInput,
     PostFilter,
@@ -43,10 +47,12 @@ export default {
       this.posts = this.posts.filter((p: Post) => p.id !== post.id);
     },
   },
-  setup(props) {
-    const {posts, totalPages, isLoading} = usePosts(10, 1);
+  setup() {
+    const {posts, totalPages, isLoading} = usePosts(LIMIT_POST);
+    const {loadMorePosts} = useLoadMorePosts(posts, LIMIT_POST);
     const {selectedSort, sortedPosts} = useSortedPosts(posts);
     const {searchTitle, filteredPosts} = useSortedByTitle(sortedPosts);
+
 
     const updateSelectedSort = (newValue: string) => {
       selectedSort.value = newValue;
@@ -66,9 +72,10 @@ export default {
       searchTitle,
       filteredPosts,
       updateSearchByTitle,
+      loadMorePosts,
     }
   },
-}
+})
 </script>
 
 <template>
@@ -92,15 +99,18 @@ export default {
       <post-form @create="createPost"/>
     </post-dialog>
     <TransitionGroup name="list">
-      <post-list v-if="!isLoading" :posts="filteredPosts" @remove="removePost"/>
+      <post-list
+          v-if="!isLoading"
+          :posts="filteredPosts"
+          @remove="removePost"
+      />
       <h3 v-else>Loading...</h3>
     </TransitionGroup>
-<!--    <div class="observer"-->
-<!--         v-intersection="{-->
-<!--        loadPosts: loadMorePosts,-->
-<!--        page,-->
-<!--        totalPages,-->
-<!--      }"></div>-->
+    <div class="observer"
+         v-intersection="{
+        loadPosts: loadMorePosts,
+        totalPages,
+      }"></div>
   </div>
 </template>
 
@@ -112,8 +122,8 @@ export default {
 }
 
 .observer {
-  height: 1px;
-  background: aqua;
+  height: 0px;
+  background: teal;
   opacity: 0;
 }
 

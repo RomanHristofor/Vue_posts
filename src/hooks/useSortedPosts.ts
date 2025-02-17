@@ -1,17 +1,18 @@
-import {ref, computed} from "vue";
-import {Post} from "@/pages/Posts.vue";
+import {ref, watchEffect, type Ref} from "vue";
+import {Post} from "@/pages/PostsPage.vue";
 
-export function useSortedPosts(posts: Post[]) {
-    const selectedSort = ref('');
+export function useSortedPosts(posts: Ref<Post[]>) {
+  const selectedSort = ref('');
+  const sortedPosts = ref<Post[]>([]);
 
-    const sortedPosts = computed(() => {
-        return [...posts.value].sort((p1, p2) => {
-            return p1[selectedSort.value]?.localeCompare(p2[selectedSort.value])
-        })
-    })
+  watchEffect(() => {
+    sortedPosts.value = [...posts.value].sort((p1, p2) =>
+      selectedSort.value ? String(p1[selectedSort.value]).localeCompare(String(p2[selectedSort.value])) : 0
+    );
+  });
 
-    return {
-        selectedSort,
-        sortedPosts
-    }
+  return {
+    selectedSort,
+    sortedPosts
+  };
 }

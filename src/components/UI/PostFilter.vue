@@ -1,6 +1,7 @@
 <script lang="ts">
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
   name: 'post-filter',
   props: {
     modelValue: {
@@ -13,19 +14,19 @@ export default {
   },
   methods: {
     changeOption(event: Event) {
-      (this as any).$emit('update:modelValue', (event.target as HTMLInputElement).value);
+      this.$emit('update:modelValue', (event.target as HTMLInputElement).value);
     }
   }
-}
+})
 </script>
 
 <template>
   <select :value="modelValue" @change="changeOption">
     <option disabled value="">Select from list</option>
     <option
-      v-for="option in options"
-      :key="option.value"
-      :value="option.value"
+        v-for="option in options"
+        :key="option.value"
+        :value="option.value"
     >
       {{ option.name }}
     </option>

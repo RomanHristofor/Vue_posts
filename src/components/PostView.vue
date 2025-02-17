@@ -1,12 +1,15 @@
 <script lang="ts">
+import {defineComponent} from 'vue';
 import {mapState} from "vuex";
-export default {
+import {PostsState} from "@/pages/PostsPage.vue";
+
+export default defineComponent({
   computed: {
     ...mapState({
-      post: state => state.post.post,
+      post: (state: unknown) => (state as PostsState).post.post,
     }),
   }
-}
+})
 </script>
 
 <template>
@@ -18,7 +21,3 @@ export default {
     </div>
   </div>
 </template>
-
-<style scoped>
-
-</style>

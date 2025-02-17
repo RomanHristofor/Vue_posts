@@ -1,18 +1,29 @@
 <script lang="ts">
-export default {
+import {defineComponent} from 'vue';
+import {useStore} from 'vuex';
+import {useRouter} from 'vue-router';
+
+export default defineComponent({
   props: {
     post: {
       type: Object,
       required: true,
     },
   },
-  methods: {
-    openPost() {
-      this.$router.push(`/posts/${this.post.id}`);
-      this.$store.commit('post/openPost', this.post)
-    }
-  }
-}
+  setup(props) {
+    const store = useStore();
+    const router = useRouter();
+
+    const openPost = () => {
+      router.push(`/posts/${props.post.id}`);
+      store.commit('post/openPost', props.post);
+    };
+
+    return {
+      openPost,
+    };
+  },
+})
 </script>
 
 <template>
@@ -34,6 +45,7 @@ export default {
   align-items: center;
   justify-content: space-between;
 }
+
 .post__id {
   margin-right: 10px;
 }

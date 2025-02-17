@@ -11,8 +11,8 @@ export default {
     <div @click="$router.push('/')">Vue 3</div>
     <div class="navbar__btn">
       <post-button @click="$router.push('/posts')">Posts</post-button>
-      <post-button @click="$router.push('/about')">About</post-button>
       <post-button @click="$router.push('/composition')">Composition</post-button>
+      <post-button @click="$router.push('/about')">About</post-button>
     </div>
   </div>
 </template>

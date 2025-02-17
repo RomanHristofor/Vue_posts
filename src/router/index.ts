@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Main from '@/pages/Main.vue'
+import MainPage from '@/pages/MainPage.vue'
 import PostView from '@/components/PostView.vue'
-import About from "@/pages/About.vue";
-import Composition from "@/pages/Composition.vue";
+import AboutPage from "@/pages/AboutPage.vue";
+import Composition from "@/pages/CompositionPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
-    component: Main
+    component: MainPage
   },
   {
     path: '/posts',
@@ -16,7 +16,7 @@ const routes: Array<RouteRecordRaw> = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '@/pages/Posts.vue')
+    component: () => import(/* webpackChunkName: "about" */ '@/pages/PostsPage.vue')
   },
   {
     path: '/posts/:id',
@@ -26,7 +26,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/about',
     name: 'about',
-    component: About
+    component: AboutPage
   },
   {
     path: '/composition',
