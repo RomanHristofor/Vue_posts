@@ -1,16 +1,33 @@
-<script lang="ts">
-import togglePopup from "@/mixins/togglePopup";
+<script lang="ts" setup>
+import PostForm from "@/components/PostForm.vue";
+import {provide} from "vue";
+import {Post} from "@/pages/PostsPage.vue";
+import {useStore} from "vuex";
 
-export default {
-  name: 'post-dialog',
-  mixins: [togglePopup],
-}
+defineProps<{ show: boolean }>();
+const emit = defineEmits(['update:show']);
+
+const store = useStore();
+
+const hideDialog = () => {
+  emit('update:show', false);
+};
+
+const createPost = (_post: Post) => {
+  const post = { ..._post, id: Date.now() };
+  store.state.posts.posts.push(post);
+  store.commit('posts/setPosts', store.state.posts.posts);
+
+  emit('update:show', false);
+};
+
+provide('create', createPost);
 </script>
 
 <template>
   <div class="dialog" v-if="show" @click="hideDialog">
     <div class="dialog-content" @click.stop>
-      <slot></slot>
+      <PostForm />
     </div>
   </div>
 </template>

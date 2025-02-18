@@ -1,5 +1,5 @@
 <script lang="ts">
-import {defineComponent} from 'vue';
+import {defineComponent, inject} from 'vue';
 import {useStore} from 'vuex';
 import {useRouter} from 'vue-router';
 
@@ -19,8 +19,11 @@ export default defineComponent({
       store.commit('post/openPost', props.post);
     };
 
+    const removePost = inject('removePost');
+
     return {
       openPost,
+      removePost,
     };
   },
 })
@@ -31,8 +34,8 @@ export default defineComponent({
     <div class="post__id">{{ post.id }}</div>
     <div><strong>Title:</strong> {{ post.title }}</div>
     <div><strong>Description:</strong> {{ post.body }}</div>
-    <post-button @click="openPost" style="margin-right: 10px;">Open</post-button>
-    <post-button @click="$emit('remove', post)">Remove</post-button>
+    <post-button class="open-post" @click="openPost">Open</post-button>
+    <post-button @click="() => removePost(post)">Remove</post-button>
   </div>
 </template>
 
@@ -47,6 +50,9 @@ export default defineComponent({
 }
 
 .post__id {
+  margin-right: 10px;
+}
+.open-post {
   margin-right: 10px;
 }
 </style>

@@ -1,29 +1,17 @@
-<script lang="ts">
+<script lang="ts" setup>
 import PostItem from "@/components/PostItem.vue";
+import {Post} from "@/pages/PostsPage.vue";
 
-export default {
-  components: {PostItem},
-  props: {
-    posts: {
-      type: Array,
-      required: true,
-    }
-  },
-}
+defineProps<{posts: Post[]}>();
 </script>
 
 <template>
   <div v-if="posts.length > 0">
-    <post-item
+    <PostItem
       v-for="post in posts"
-      :post="post"
       :key="post.id"
-      @remove="$emit('remove', post)"
+      :post="post"
     />
   </div>
   <h3 v-else>Post list is empty</h3>
 </template>
-
-<style scoped>
-
-</style>

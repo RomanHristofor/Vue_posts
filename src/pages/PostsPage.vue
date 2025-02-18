@@ -1,11 +1,10 @@
 <script lang="ts">
-import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
 import PostDialog from "@/components/UI/PostDialog.vue";
 import PostFilter from "@/components/UI/PostFilter.vue";
 import PostInput from "@/components/UI/PostInput.vue";
-import {mapState, mapGetters, mapActions, mapMutations} from "vuex";
-import {defineComponent} from "vue";
+import {mapState, mapGetters, mapActions, mapMutations, useStore} from "vuex";
+import {defineComponent, provide} from "vue";
 
 export type Post = {
   id: number;
@@ -38,7 +37,18 @@ export default defineComponent({
     PostFilter,
     PostDialog,
     PostList,
-    PostForm,
+  },
+  setup() {
+    const store = useStore();
+    const removePost = (post: Post) => {
+      store.commit('posts/setPosts', store.state.posts.posts.filter((p: Post) => p.id !== post.id));
+    };
+
+    provide('removePost', removePost);
+
+    return {
+      removePost,
+    };
   },
   data() {
     return {
@@ -57,13 +67,6 @@ export default defineComponent({
       loadMorePosts: "posts/loadMorePosts",
       fetchPosts: "posts/fetchPosts"
     }),
-    createPost(post: Post) {
-      this.posts.push(post);
-      this.show = false;
-    },
-    removePost(post: Post) {
-      this.setPosts(this.posts.filter((p: Post) => p.id !== post.id));
-    },
     showDialog() {
       this.show = true;
     },
@@ -110,18 +113,19 @@ export default defineComponent({
           :options="sortOptions"
       />
     </div>
-    <post-dialog v-model:show="show">
-      <post-form @create="createPost"/>
-    </post-dialog>
+    <PostDialog v-model:show="show"/>
     <TransitionGroup name="list">
-      <post-list v-if="!isLoading" :posts="sortedPosts" @remove="removePost"/>
+      <PostList
+          v-if="!isLoading"
+          :posts="sortedPosts"
+      />
       <h3 v-else>Loading...</h3>
     </TransitionGroup>
     <div class="observer"
          v-intersection="{
-        loadPosts: loadMorePosts,
-        totalPages,
-      }"></div>
+            loadPosts: loadMorePosts,
+            totalPages,
+          }"></div>
   </div>
 </template>
 
